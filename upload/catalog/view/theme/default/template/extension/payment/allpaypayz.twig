@@ -1,0 +1,29 @@
+<div class="buttons">
+  <div class="pull-right">
+    <button type="button" id="button-allpaypayz-confirm" class="btn btn-primary">{{ button_confirm }}</button>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#button-allpaypayz-confirm').on('click', function () {
+  $.ajax({
+    url: 'index.php?route=extension/payment/allpaypayz/confirm',
+    type: 'post',
+    dataType: 'json',
+    beforeSend: function () {
+      $('#button-allpaypayz-confirm').button('loading');
+    },
+    success: function (json) {
+      if (json && json.redirect) {
+        window.location = json.redirect;
+      } else {
+        $('#button-allpaypayz-confirm').button('reset');
+        alert('Payment initiation failed: ' + (json && json.error ? json.error : 'unknown'));
+      }
+    },
+    error: function () {
+      $('#button-allpaypayz-confirm').button('reset');
+      alert('Payment initiation failed.');
+    }
+  });
+});
+//--></script>
